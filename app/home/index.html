@@ -1,0 +1,53 @@
+<div class="row">
+  <div class="col">
+    <table class="table-parent stripe table-bordered">
+      <thead class="">
+        <tr>
+          <th ng-repeat="header in appCtrls.tableHeaders" class="{{header.headerClass}}">
+            <label ng-if="!header.dropDownFilter">{{header.headerName}}</label>
+            <select ng-if="header.dropDownFilter" class="btn-sm p-0">
+              <option selected disabled>{{header.headerName}}</option>
+              <option ng-repeat="option in header.dropDownOptions" value="{{option}}">{{option}}</option>
+            </select>
+          </th>
+        </tr>
+      </thead>
+      <tbody class="">
+        <tr ng-repeat="player in appCtrls.parsed_players" class="">
+          <td class="p-0"><img class="show-card-img" width="40" ng-src="{{player.card_img}}" data-toggle="modal" data-target="#cardModal" /></td>
+          <td class="">{{player.name}}</td>
+          <td class="">{{player.ovr}}</td>
+          <td class="">{{player.type}}</td>
+          <td class="">{{appCtrls.convertHeightInchToFeetInch(player.height)}}</td>
+          <td class="">{{player.pos}}</td>
+          <td ng-repeat="row in [1,2,3,4,5,6,7,8]" class="">{{player.stats["(1," + row + ")"].value}}</td>
+          <td ng-repeat="row in [1,2,3,4,5,6,7,8]" class="" column-repeat-directive>{{player.stats["(2," + row + ")"].value}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="modal fade" id="cardModal" aria-hidden="true">
+      <div class="modal-content">
+        <div class="modal-body">
+          <img class="card-img" src="" />
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--
+  <div class="col">
+    <h1>Search</h1>
+    <div class="row">
+      <label class="pr-3">Name:</label>
+      <input class="float-right" placeholder="" aria-controls="DataTables_Table_0">
+    </div>
+    <div class="row">
+      <label class="pr-3">OVR:</label>
+      <input class="float-right" placeholder="" aria-controls="DataTables_Table_0">
+    </div>
+    <div class="row">
+      <label class="pr-3">Name:</label>
+      <input class="float-right" placeholder="" aria-controls="DataTables_Table_0">
+    </div>
+  </div>
+  -->
+</div>

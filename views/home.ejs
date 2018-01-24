@@ -1,0 +1,45 @@
+﻿<%- include('partials/header') %>
+
+<!--Video Section-->
+<div class="fullscreen-bg">
+	<video autoplay loop controls muted class="bgvid">
+		<source src="app/app-content/bgvideo.mp4" type="video/mp4">
+	</video>
+</div>
+<!--Video Section Ends Here-->
+
+<div class="jumbotron">
+	<div class="wrap-center col-centered">
+		<h1><strong>Zen</strong><small>spot</small> </h1>
+	
+		<p><span class="label-msg-center"> </span> </p>
+	
+		<form class="form-inline">
+			<div class="form-group row col-centered">
+				<label for="inputZipCode" class="sr-only">Zip Code</label>
+				<div class="col-padding">
+					<input type="text" class="form-control form-control-lg" id="location_zip" placeholder="Enter your zipcode">
+					<p></p>
+					<button type="submit" class="btn btn-primary btn-lg btn-outline">Search</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+<script>
+	//welcome message
+  $(function(){
+      $(".label-msg-center").typed({
+        strings: ["ZenSpot", "Easy parking."],
+        typeSpeed: 0,
+		startDelay: 1000,
+		backDelay: 500,
+		showCursor: false,
+		loop: true,
+        loopCount: false
+      });
+  });
+</script>
+
+<%- include('partials/footer') %>
