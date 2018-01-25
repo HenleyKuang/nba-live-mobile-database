@@ -1,4 +1,5 @@
 ﻿{
-    "apiUrl": "https://streamforce.herokuapp.com/api",
-    "secret": "SECRETSAUCETRACEYMCGRADY!!!"
+  "connectionString": "mongodb://henleyk:test1234@ds215388.mlab.com:15388/nbalivemobilecards",
+  "apiUrl": "https://nba-live-mobile-database.herokuapp.com/api",
+  "secret": "SECRETSAUCETRACEYMCGRADY!!!"
 }

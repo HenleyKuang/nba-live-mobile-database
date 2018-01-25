@@ -2,42 +2,57 @@
     'use strict';
 
     angular
-        .module('player')
-        .controller('Home.IndexController', Controller)
-        .directive('columnRepeatDirective', function () {
-          return {
-            restrict: 'A',
-            link: function (scope, element, attrs) {
-              if (scope.$parent.$last && scope.$last) {
-                setTimeout(function () {
-                  // initialize data table
-                  scope.tableParent = $('.table-parent').dataTable({
-                    "columnDefs": [{
-                      "targets": [0, 3, 5],
-                      "orderable": false,
-                      "width": "40px"
-                    }],
-                    "order": [[2, 'desc']],
-                  });
-                  // set click action to show card modal
-                  scope.tableParent.$('.show-card-img').click(function (elem) {
-                    // var data = scope.tableParent.fnGetData(this);
-                    var base64Image = elem.currentTarget.getAttribute('src');
-                    $('.card-img').attr('src', base64Image);
-                  });
-                  // set column filtering actions
-                  $('.drop-down-column > select').on('change', function () {
-                    if (this.value == "ALL") {
-                      scope.tableParent.api().column($(this).parent().index()).search('').draw();
-                    } else {
-                      scope.tableParent.api().column($(this).parent().index()).search(this.value).draw();
-                    }
-                  });
-                }, 1);
-              }
+      .module('player')
+      .controller('Home.IndexController', Controller)
+      .directive('columnRepeatDirective', function () {
+        return {
+          restrict: 'A',
+          link: function (scope, element, attrs) {
+            if (scope.$parent.$last && scope.$last) {
+              setTimeout(function () {
+                // initialize data table
+                scope.tableParent = $('.table-parent').dataTable({
+                  "columnDefs": [{
+                    "targets": [0, 3, 5],
+                    "orderable": false,
+                    "width": "40px"
+                  }],
+                  "order": [[2, 'desc']],
+                });
+                // set click action to show card modal
+                scope.tableParent.$('.show-card-img').click(function (elem) {
+                  // var data = scope.tableParent.fnGetData(this);
+                  var base64Image = elem.currentTarget.getAttribute('ng-src');
+                  $('.card-img').attr('src', base64Image);
+                });
+                // set lazy load images
+                /*
+                scope.tableParent.on('page.dt', function (elem) {
+                  // var data = scope.tableParent.fnGetData(this);
+                  console.log(elem);
+                  var imgSrc = $(elem.currentTarget).children('.show-card-img');
+                  console.log(imgSrc);
+                  elem.currentTarget.attr('src', imgSrc);
+                });
+                */  
+                // set column filtering actions
+                $('.drop-down-column > select').on('change', function () {
+                  if (this.value == "ALL") {
+                    scope.tableParent.api().column($(this).parent().index()).search('').draw();
+                  } else {
+                    scope.tableParent.api().column($(this).parent().index()).search(this.value).draw();
+                  }
+                });
+              }, 1);
             }
-          };
-        });
+          }
+        };
+      })
+      .directive('getImgSrcDirective', function () {
+        return function (scope, element, attrs) {
+          // scope.tableParent = $('.table-parent').dataTable();
+        };
+      });
 
     function Controller($scope, $window, $timeout, $location, UserService, FlashService) {
         var appCtrls = this;

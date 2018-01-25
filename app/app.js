@@ -5,7 +5,7 @@
     'use strict';
 
     angular
-        .module('player', ['ui.router'])
+        .module('player', ['ui.router', 'me-lazyload'])
         .config(config);
 
 

@@ -14,7 +14,7 @@
       </thead>
       <tbody class="">
         <tr ng-repeat="player in appCtrls.parsed_players" class="">
-          <td class="p-0"><img class="show-card-img" width="40" ng-src="{{player.card_img}}" data-toggle="modal" data-target="#cardModal" /></td>
+          <td class="p-0"><img class="show-card-img" width="40" ng-src="/api/players/searchCardImage?hash={{player.hash}}" data-toggle="modal" data-target="#cardModal" /></td>
           <td class="">{{player.name}}</td>
           <td class="">{{player.ovr}}</td>
           <td class="">{{player.type}}</td>
