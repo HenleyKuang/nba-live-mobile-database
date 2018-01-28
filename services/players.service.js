@@ -12,8 +12,29 @@ db.bind('cards');
 var service = {};
 
 service.searchCardImage = searchCardImage;
+service.search = search;
 
 module.exports = service;
+
+function search(searchParameters) {
+  var deferred = Q.defer();
+  var search_q = {
+    //create search query using parameters passed through req.query
+  };
+  db.cards.find(search_q, { card_img: 0 }).toArray(function(err, playerData) {
+    // collInfos is an array of collection info objects that look like:
+    // { name: 'test', options: {} }
+    if(err) deferred.reject(err.name + ': ' + err.message);
+    if(playerData) {
+      deferred.resolve(playerData);
+    }
+    else {
+      // user not found
+      deferred.resolve();
+    }
+  });
+  return deferred.promise;
+}
 
 function searchCardImage(player_hash) {
   var deferred = Q.defer();

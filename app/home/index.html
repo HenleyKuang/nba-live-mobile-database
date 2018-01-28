@@ -18,7 +18,7 @@
           <td class="">{{player.name}}</td>
           <td class="">{{player.ovr}}</td>
           <td class="">{{player.type}}</td>
-          <td class="">{{appCtrls.convertHeightInchToFeetInch(player.height)}}</td>
+          <td class="">{{convertHeightInchToFeetInch(player.height)}}</td>
           <td class="">{{player.pos}}</td>
           <td ng-repeat="row in [1,2,3,4,5,6,7,8]" class="">{{player.stats["(1," + row + ")"].value}}</td>
           <td ng-repeat="row in [1,2,3,4,5,6,7,8]" class="" column-repeat-directive>{{player.stats["(2," + row + ")"].value}}</td>

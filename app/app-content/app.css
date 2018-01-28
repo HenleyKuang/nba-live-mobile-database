@@ -11,8 +11,11 @@ body {
   max-width: 150px;
 }
 
+.card-response-input {
+  max-height: 400px;
+}
+  
 .drop-down-column {
-
 }
 
 .modal-content {
@@ -32,4 +35,9 @@ body {
     display:inline-block!important;
     vertical-align:top;
     padding-bottom: 10px;
+}
+
+.w-23 {
+  max-width: 20%!important;
+  width: 20%!important;
 }

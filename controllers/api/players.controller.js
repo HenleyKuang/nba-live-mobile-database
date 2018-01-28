@@ -5,6 +5,7 @@ var playerService = require('../../services/players.service');
 
 // routes
 router.get('/searchCardImage', searchCardImage);
+router.get('/search', search);
 
 module.exports = router;
 
@@ -28,4 +29,22 @@ function searchCardImage(req, res) {
   .catch(function(err) {
     res.status(400).send(err);
   });
+}
+
+
+function search(req, res) {
+  playerService.search(req.query.searchParameters)
+    .then(function (result) {
+      if (result) {
+        //found link
+        res.send(result);
+      }
+      else {
+        //failed
+        res.status(404).send({});
+      }
+    })
+    .catch(function (err) {
+      res.status(400).send(err);
+    });
 }

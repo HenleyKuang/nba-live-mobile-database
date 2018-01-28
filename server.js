@@ -13,6 +13,7 @@ app.use(bodyParser.json());
 
 // use JWT auth to secure the api
 
+/*
 app.use('/api', function ( req, res, next) {
 //   res.setHeader('Access-Control-Allow-Origin', 'http://streamforce.herokuapp.com');
    //res.header('Access-Control-Allow-Origin', 'http://streamforce.herokuapp.com);
@@ -21,6 +22,7 @@ app.use('/api', function ( req, res, next) {
 //   res.header('Access-Control-Allow-Credentials', true);
   return next();
 });
+*/
 
 // routes
 app.use('/database', require('./controllers/database.controller'));

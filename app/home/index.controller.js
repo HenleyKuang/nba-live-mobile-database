@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-      .module('player')
+      .module('database')
       .controller('Home.IndexController', Controller)
       .directive('columnRepeatDirective', function () {
         return {
@@ -54,7 +54,7 @@
         };
       });
 
-    function Controller($scope, $window, $timeout, $location, UserService, FlashService) {
+    function Controller($scope, $rootScope, $window, $timeout, $location, $http) {
         var appCtrls = this;
 
         //App Variables
@@ -98,15 +98,8 @@
             });
         };
 
-        appCtrls.callAPI("parsed_players.json", function (parsed_players_raw) {
-          console.log(parsed_players_raw);
+        appCtrls.callAPI("/api/players/search", function (parsed_players_raw) {
           appCtrls.parsed_players = parsed_players_raw;
         });
-
-        appCtrls.convertHeightInchToFeetInch = function (height_inches) {
-          var feet = Math.floor(height_inches / 12);
-          var inch = height_inches % 12;
-          return feet.toString() + "'" + inch.toString() + '"';
-        };
     }
 })();
