@@ -14,8 +14,9 @@ body {
 .card-response-input {
   max-height: 400px;
 }
-  
-.drop-down-column {
+
+.badge {
+  font-size: 40%!important;
 }
 
 .modal-content {

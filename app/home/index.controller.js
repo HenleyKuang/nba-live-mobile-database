@@ -34,7 +34,7 @@
                   console.log(imgSrc);
                   elem.currentTarget.attr('src', imgSrc);
                 });
-                */  
+                */
                 // set column filtering actions
                 $('.drop-down-column > select').on('change', function () {
                   if (this.value == "ALL") {
@@ -54,7 +54,7 @@
         };
       });
 
-    function Controller($scope, $rootScope, $window, $timeout, $location, $http) {
+    function Controller($rootScope) {
         var appCtrls = this;
 
         //App Variables
@@ -82,23 +82,8 @@
             { headerName: "ORB" },
             { headerName: "DRB" },
         ];
-        appCtrls.showBoxScore = false;
 
-        //list of NBA API EndPoints
-        appCtrls.apiEndPoints = {};
-
-      //custom JSON function to reduce lines
-        appCtrls.callAPI = function ( apiUrl, successCallback, failCallback, alwaysCallback ) {
-        $.getJSON (apiUrl).then( function (json) {
-            $scope.$apply(function () { successCallback(json); });
-            }).fail(function(jqxhr){
-            if( failCallback != null ) $scope.$apply(function () { failCallback(); });
-            }).always(function() {
-            if( alwaysCallback != null ) $scope.$apply(function () { alwaysCallback(); });
-            });
-        };
-
-        appCtrls.callAPI("/api/players/search", function (parsed_players_raw) {
+        $rootScope.callGetAPI("/api/players/search", function (parsed_players_raw) {
           appCtrls.parsed_players = parsed_players_raw;
         });
     }

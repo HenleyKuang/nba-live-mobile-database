@@ -1,62 +1,87 @@
 <div class="row p-3">
-  <input type="file" name="photo" id="photo" multiple="true" />
-  <input type="submit" value="Upload" ng-click="appCtrls.uploadFile()" />
-</div>
-<div class="row p-3" ng-repeat="file in appCtrls.uploadFiles">
-  <div class="col-1 display-3">
-    <div class="btn-group-toggle" data-toggle="buttons">
-      <label class="btn" ng-click="appCtrls.markCard($index, true)" ng-class="{'btn-outline-danger': appCtrls.badCards[$index] != true, 'btn-danger': appCtrls.badCards[$index] == true}">
-        <input type="radio" name="options" id="option1" autocomplete="off"> Bad
-      </label>
-      <label class="btn active" ng-click="appCtrls.markCard($index, false)" ng-class="{'btn-outline-success': appCtrls.badCards[$index] == true, 'btn-success': appCtrls.badCards[$index] != true}">
-        <input type="radio" name="options" id="option2" autocomplete="off" checked> Good
-      </label>
-    </div>
+  <div class="col">
+    <input type="file" name="photo" id="photo" multiple="true" />
+    <input type="submit" value="Upload" ng-click="appCtrls.uploadFile()" />
   </div>
   <div class="col">
-    <img class="w-100" alt="Image Preview" id="preview_{{$index}}" />
+    <input type="checkbox" class="form-check-input" id="showExistingCheck" ng-model="appCtrls.showExisting">
+    <label class="form-check-label" for="showExistingCheck">Show Existing</label>
   </div>
-  <h1><i class="fa fa-spinner fa-spin" ng-show="appCtrls.parsedCardResponse[$index] == undefined"></i></h1>
-  <!-- <pre class="col pre card-response-input" contenteditable="true">{{appCtrls.parsedCardResponse[$index]}}</pre> -->
-  <div class="col-sm">
-    <div ng-show="appCtrls.parsedCardResponse[$index]">
-      <div class="row">
-        <div class="input-group">
-          <span class="input-group-addon">Name</span>
-          <input type="text" class="form-control" value="{{appCtrls.parsedCardResponse[$index].name}}" />
-        </div>
+  <div class="col">
+      <button type="button" class="btn btn-primary" ng-click="appCtrls.addCardsToDatabase()">Add to Database</button>
+  </div>
+</div>
+<div ng-repeat="file in appCtrls.uploadFiles">
+  <div class="row p-3" ng-hide="!appCtrls.showExisting && appCtrls.existList[$index]">
+    <div class="col-1 display-3">
+      <div class="btn-group-toggle" data-toggle="buttons">
+        <label class="btn" ng-click="appCtrls.markCard($index, true)" ng-class="{'btn-outline-danger': appCtrls.badCards[$index] != true, 'btn-danger': appCtrls.badCards[$index] == true}">
+          <input type="radio" name="options" id="option1" autocomplete="off"> Bad
+        </label>
+        <label class="btn active" ng-click="appCtrls.markCard($index, false)" ng-class="{'btn-outline-success': appCtrls.badCards[$index] == true, 'btn-success': appCtrls.badCards[$index] != true}">
+          <input type="radio" name="options" id="option2" autocomplete="off" checked> Good
+        </label>
+        <label class="h6">
+          Add Status:
+        </label>
+        <h1><i class="fa fa-spinner fa-spin" ng-show="appCtrls.addStatus[$index] == undefined && appCtrls.addingToDatabase"></i></h1>
+        <span class="badge h6" ng-class="{'badge-success': appCtrls.addStatus[$index], 'badge-danger': !appCtrls.addStatus[$index]}">{{appCtrls.addStatus[$index]}}</span>
+        <label class="h6">
+          Exists:
+        </label>
+        <h1><i class="fa fa-spinner fa-spin" ng-show="appCtrls.existList[$index] == undefined"></i></h1>
+        <h6>{{appCtrls.existList[$index]}}</h6>
       </div>
-      <div class="row">
-        <div class="col p-0 w-23">
-          <img class="w-100" ng-src="data:image/png;base64,{{appCtrls.parsedCardResponse[$index].card_img}}" />
-          <div class="input-group w-100">
-            <span class="input-group-addon">OVR</span>
-            <input type="text" class="form-control" value="{{appCtrls.parsedCardResponse[$index].ovr}}" />
-          </div>
-          <div class="input-group w-100">
-            <span class="input-group-addon">Type</span>
-            <input type="text" class="form-control" value="{{appCtrls.parsedCardResponse[$index].type}}" />
-          </div>
-          <div class="input-group w-100">
-            <span class="input-group-addon">Height</span>
-            <input type="text" class="form-control" value="{{convertHeightInchToFeetInch(appCtrls.parsedCardResponse[$index].height)}}" />
+    </div>
+    <div class="col">
+      <img class="w-100" alt="Image Preview" id="preview_{{$index}}" />
+    </div>
+    <h1><i class="fa fa-spinner fa-spin" ng-show="appCtrls.parsedCardResponse[$index] == undefined"></i></h1>
+    <!-- <pre class="col pre card-response-input" contenteditable="true">{{appCtrls.parsedCardResponse[$index]}}</pre> -->
+    <div class="col-sm">
+      <div ng-show="appCtrls.parsedCardResponse[$index]" >
+        <div class="row">
+          <div class="input-group">
+            <span class="input-group-addon">Name</span>
+            <input type="text" class="form-control" value="{{appCtrls.parsedCardResponse[$index].name}}" />
           </div>
         </div>
-        <div class="col p-0">
-          <div class="row p-0 m-0">
-            <div class="col">
-              <div class="row" ng-repeat="row in [1,2,3,4,5,6,7,8]">
-                <div class="input-group">
-                  <span class="input-group-addon text-left w-75">{{appCtrls.parsedCardResponse[$parent.$index].stats['(1,' + row + ')'].name}}</span>
-                  <input type="text" class="form-control" ng-value="appCtrls.parsedCardResponse[$parent.$index].stats['(1,' + row + ')'].value" />
+        <div class="row">
+          <div class="col p-0 w-23">
+            <img class="w-100" ng-src="data:image/png;base64,{{appCtrls.parsedCardResponse[$index].card_img}}" />
+            <div class="input-group w-100">
+              <span class="input-group-addon">OVR</span>
+              <input type="text" class="form-control" value="{{appCtrls.parsedCardResponse[$index].ovr}}" />
+            </div>
+            <div class="input-group w-100">
+              <span class="input-group-addon">POS</span>
+              <input type="text" class="form-control" value="{{appCtrls.parsedCardResponse[$index].pos}}" />
+            </div>
+            <div class="input-group w-100">
+              <span class="input-group-addon">Type</span>
+              <input type="text" class="form-control" value="{{appCtrls.parsedCardResponse[$index].type}}" />
+            </div>
+            <div class="input-group w-100">
+              <span class="input-group-addon">Height</span>
+              <input type="text" class="form-control" value="{{convertHeightInchToFeetInch(appCtrls.parsedCardResponse[$index].height)}}" />
+            </div>
+          </div>
+          <div class="col p-0">
+            <div class="row p-0 m-0">
+              <div class="col">
+                <div class="row" ng-repeat="row in [1,2,3,4,5,6,7,8]">
+                  <div class="input-group">
+                    <span class="input-group-addon text-left w-75">{{appCtrls.parsedCardResponse[$parent.$index].stats['(1,' + row + ')'].name}}</span>
+                    <input type="text" class="form-control" ng-value="appCtrls.parsedCardResponse[$parent.$index].stats['(1,' + row + ')'].value" />
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="col">
-              <div class="row" ng-repeat="row in [1,2,3,4,5,6,7,8]">
-                <div class="input-group">
-                  <span class="input-group-addon text-left w-75">{{appCtrls.parsedCardResponse[$parent.$index].stats['(2,' + row + ')'].name}}</span>
-                  <input type="text" class="form-control" ng-value="appCtrls.parsedCardResponse[$parent.$index].stats['(2,' + row + ')' ].value" />
+              <div class="col">
+                <div class="row" ng-repeat="row in [1,2,3,4,5,6,7,8]">
+                  <div class="input-group">
+                    <span class="input-group-addon text-left w-75">{{appCtrls.parsedCardResponse[$parent.$index].stats['(2,' + row + ')'].name}}</span>
+                    <input type="text" class="form-control" ng-value="appCtrls.parsedCardResponse[$parent.$index].stats['(2,' + row + ')' ].value" />
+                  </div>
                 </div>
               </div>
             </div>

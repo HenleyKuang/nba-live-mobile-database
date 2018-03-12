@@ -34,6 +34,20 @@
         var inch = height_inches % 12;
         return feet.toString() + "'" + inch.toString() + '"';
       };
+
+      $rootScope.callGetAPI = function ( apiUrl, successCallback, failCallback, alwaysCallback ) {
+        $.getJSON (apiUrl).then( function (json) {
+          $rootScope.$apply(function () { successCallback(json); });
+          }).fail(function(jqxhr){
+          if( failCallback != null ) $rootScope.$apply(function () { failCallback(); });
+          }).always(function() {
+          if( alwaysCallback != null ) $rootScope.$apply(function () { alwaysCallback(); });
+        });
+      };
+
+      $rootScope.callPostAPI = function ( apiUrl, postData, successCallback, failCallback, alwaysCallback ){
+        $.post(apiUrl, postData, successCallback);
+      };
     }
 
     // manually bootstrap angular after the JWT token is retrieved from the server
