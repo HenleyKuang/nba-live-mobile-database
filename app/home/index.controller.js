@@ -54,7 +54,7 @@
         };
       });
 
-    function Controller($rootScope) {
+    function Controller($rootScope, $http, $q, $location) {
         var appCtrls = this;
 
         //App Variables
@@ -86,5 +86,38 @@
         $rootScope.callGetAPI("/api/players/search", function (parsed_players_raw) {
           appCtrls.parsed_players = parsed_players_raw;
         });
+
+        appCtrls.selectedCard = {}
+        appCtrls.getCardAPI = function (card_hash) {
+          $location.search('player_id',card_hash);
+          var q = {
+            hash: card_hash
+          };
+          $rootScope.getSearchAPI(q).then(function(res) {
+            appCtrls.selectedCard = res[0];
+          })
+        }
+
+        $rootScope.getSearchAPI = function(query) {
+          return $http.get('/api/players/search', { params: query } )
+            .then(function handleSuccess(res) {
+              return res.data;
+            }, function handleError(res) {
+              return $q.reject(res.data);
+            });
+        }
+
+        appCtrls.onLoad = function () {
+          //check URL parameter if user is linking directly to a specific game
+          let searchObject = $location.search();
+          if( searchObject.hasOwnProperty('player_id') ) {
+            let base64Image = '/api/players/searchCardImage?hash=' + searchObject.player_id
+            $('.card-img').attr('src', base64Image);
+            appCtrls.getCardAPI(searchObject.player_id);
+            $('#cardModal').modal('show');
+          }
+        }
+
+        appCtrls.onLoad();
     }
 })();

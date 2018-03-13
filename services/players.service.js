@@ -18,9 +18,10 @@ module.exports = service;
 
 function search(searchParameters) {
   var deferred = Q.defer();
-  var search_q = {
+  var search_q = Object.keys(searchParameters).length ? {
     //create search query using parameters passed through req.query
-  };
+    "hash": searchParameters.hash
+  } : {};
   db.cards.find(search_q, { card_img: 0 }).toArray(function(err, playerData) {
     // collInfos is an array of collection info objects that look like:
     // { name: 'test', options: {} }

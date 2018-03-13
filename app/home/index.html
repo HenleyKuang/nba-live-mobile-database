@@ -14,7 +14,7 @@
       </thead>
       <tbody class="">
         <tr ng-repeat="player in appCtrls.parsed_players" class="">
-          <td class="p-0"><img class="show-card-img" width="40" ng-src="/api/players/searchCardImage?hash={{player.hash}}" data-toggle="modal" data-target="#cardModal" /></td>
+          <td class="p-0"><img class="show-card-img" width="40" ng-src="/api/players/searchCardImage?hash={{player.hash}}" ng-click="appCtrls.getCardAPI(player.hash)"" data-toggle="modal" data-target="#cardModal" /></td>
           <td class="">{{player.name}}</td>
           <td class="">{{player.ovr}}</td>
           <td class="">{{player.type}}</td>
@@ -28,7 +28,43 @@
     <div class="modal fade" id="cardModal" aria-hidden="true">
       <div class="modal-content">
         <div class="modal-body">
-          <img class="card-img" src="" />
+          <div class="row">
+            <div class="col p-0 w-23">
+              <img class="card-img" src="" />
+              <div class="input-group w-100">
+                <span class="input-group-addon"><strong>OVR</strong></span>
+                <input type="text" class="form-control" value="{{appCtrls.selectedCard.ovr}}" readonly/>
+              </div>
+              <div class="input-group w-100">
+                <span class="input-group-addon"><strong>POS</strong></span>
+                <input type="text" class="form-control" value="{{appCtrls.selectedCard.pos}}" readonly/>
+              </div>
+              <div class="input-group w-100">
+                <span class="input-group-addon"><strong>Type</strong></span>
+                <input type="text" class="form-control" value="{{appCtrls.selectedCard.type}}" readonly/>
+              </div>
+              <div class="input-group w-100">
+                <span class="input-group-addon"><strong>Height</strong></span>
+                <input type="text" class="form-control" value="{{convertHeightInchToFeetInch(appCtrls.selectedCard.height)}}" readonly/>
+              </div>
+            </div>
+            <div class="col">
+              <div class="row" ng-repeat="row in [1,2,3,4,5,6,7,8]">
+                <div class="input-group">
+                  <span class="input-group-addon text-left w-75"><strong>{{appCtrls.selectedCard.stats['(1,' + row + ')'].name}}</strong></span>
+                  <input type="text" class="form-control" ng-value="appCtrls.selectedCard.stats['(1,' + row + ')'].value" readonly/>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="row" ng-repeat="row in [1,2,3,4,5,6,7,8]">
+                <div class="input-group">
+                  <span class="input-group-addon text-left w-75"><strong>{{appCtrls.selectedCard.stats['(2,' + row + ')'].name}}</strong></span>
+                  <input type="text" class="form-control" ng-value="appCtrls.selectedCard.stats['(2,' + row + ')' ].value" readonly/>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

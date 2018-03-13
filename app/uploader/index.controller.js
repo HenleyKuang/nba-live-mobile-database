@@ -10,6 +10,7 @@
       appCtrls.addingToDatabase = false;
       appCtrls.showExisting = false;
       appCtrls.readyAddDatabase = false;
+      appCtrls.existList = [];
 
       appCtrls.sendFileAPI = function (apiUrl, file, successCallback, failCallback, alwaysCallback) {
         var formData = new FormData();

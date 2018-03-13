@@ -33,7 +33,7 @@ function searchCardImage(req, res) {
 
 
 function search(req, res) {
-  playerService.search(req.query.searchParameters)
+  playerService.search(req.query)
     .then(function (result) {
       if (result) {
         //found link
