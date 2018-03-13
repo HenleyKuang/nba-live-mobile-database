@@ -42,3 +42,16 @@ body {
   max-width: 20%!important;
   width: 20%!important;
 }
+
+@media (max-width: 480px) {
+  /*
+  .input-group {
+    width: 50%!important;
+  }
+  */
+
+  .modal-content {
+    top: 20%;
+    width: 100%;
+  }
+}
