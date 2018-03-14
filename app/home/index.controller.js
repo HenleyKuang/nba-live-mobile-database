@@ -13,16 +13,16 @@
                 // initialize data table
                 scope.tableParent = $('.table-parent').dataTable({
                   "columnDefs": [{
-                    "targets": [0, 3, 5],
+                    "targets": [1, 4, 6],
                     "orderable": false,
                     "width": "40px"
                   }],
-                  "order": [[2, 'desc']],
+                  "order": [[3, 'desc']],
                 });
                 // set click action to show card modal
                 scope.tableParent.$('.show-card-img').click(function (elem) {
                   // var data = scope.tableParent.fnGetData(this);
-                  var base64Image = elem.currentTarget.getAttribute('ng-src');
+                  var base64Image = "/api/players/searchCardImage?hash=" + elem.currentTarget.getAttribute('ng-data');
                   $('.card-img').attr('src', base64Image);
                 });
                 // set lazy load images
@@ -54,11 +54,12 @@
         };
       });
 
-    function Controller($rootScope, $http, $q, $location) {
+    function Controller($rootScope, $scope, $http, $q, $location) {
         var appCtrls = this;
 
         //App Variables
         appCtrls.tableHeaders = [
+            { headerName: "", headerClass: "p-0 m-0 text-center"},
             { headerName: "Card", headerClass: "p-0 text-center"},
             { headerName: "NAME"},
             { headerName: "OVR" },
@@ -87,7 +88,7 @@
           appCtrls.parsed_players = parsed_players_raw;
         });
 
-        appCtrls.selectedCard = {}
+        appCtrls.selectedCard = {};
         appCtrls.getCardAPI = function (card_hash) {
           $location.search('player_id',card_hash);
           var q = {
@@ -95,7 +96,7 @@
           };
           $rootScope.getSearchAPI(q).then(function(res) {
             appCtrls.selectedCard = res[0];
-          })
+          });
         }
 
         $rootScope.getSearchAPI = function(query) {
@@ -107,16 +108,33 @@
             });
         }
 
+        let favPlayersCookie = $rootScope.getCookie("FAV");
+        appCtrls.favoritePlayers = favPlayersCookie.length > 0 ? JSON.parse(favPlayersCookie) : {};
+        appCtrls.modifyFavorite = function(player_hash) {
+          if (!appCtrls.favoritePlayers.hasOwnProperty(player_hash)) {
+            appCtrls.favoritePlayers[player_hash] = true;
+          } else {
+            delete appCtrls.favoritePlayers[player_hash];
+          }
+          $rootScope.setCookie("FAV", JSON.stringify(appCtrls.favoritePlayers), 120, '/');
+        }
+
         appCtrls.onLoad = function () {
           //check URL parameter if user is linking directly to a specific game
           let searchObject = $location.search();
           if( searchObject.hasOwnProperty('player_id') ) {
-            let base64Image = '/api/players/searchCardImage?hash=' + searchObject.player_id
+            let base64Image = '/api/players/searchCardImage?hash=' + searchObject.player_id;
             $('.card-img').attr('src', base64Image);
             appCtrls.getCardAPI(searchObject.player_id);
             $('#cardModal').modal('show');
           }
         }
+
+        $('#cardModal').on('hidden.bs.modal', function (e) {
+          $location.search('player_id', null);
+          appCtrls.selectedCard = {};
+          $rootScope.$apply();
+        });
 
         appCtrls.onLoad();
     }
