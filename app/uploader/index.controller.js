@@ -11,6 +11,7 @@
       appCtrls.showExisting = false;
       appCtrls.readyAddDatabase = false;
       appCtrls.existList = [];
+      appCtrls.baseAPIUrl = 'https://nba-live-mobile-parser-api.herokuapp.com';//'http://127.0.0.1:8000';
 
       appCtrls.sendFileAPI = function (apiUrl, file, successCallback, failCallback, alwaysCallback) {
         var formData = new FormData();
@@ -48,9 +49,8 @@
         let hashList = {};
         let cardsProcessed = 0;
         angular.forEach(appCtrls.uploadFiles, function (file, index) {
-          appCtrls.sendFileAPI('http://127.0.0.1:8000/parse/', file, function (card_json) {
+          appCtrls.sendFileAPI(appCtrls.baseAPIUrl + '/parse/', file, function (card_json) {
             appCtrls.parsedCardResponse[index] = card_json;
-            // appCtrls.existCard(card_json["hash"], index);
             hashList[index] = card_json["hash"];
             cardsProcessed++;
             if (cardsProcessed == appCtrls.uploadFiles.length) {
@@ -63,7 +63,7 @@
 
       appCtrls.addStatus = {}
       appCtrls.addCard = function (card_json, index) {
-        $rootScope.callPostAPI('http://127.0.0.1:8000/add/', card_json, function (data, textStatus) {
+        $rootScope.callPostAPI(appCtrls.baseAPIUrl + '/add/', card_json, function (data, textStatus) {
           // console.log(`textStatus: ${textStatus}`);
           if (textStatus == "success") {
             let response = JSON.parse(data);
@@ -73,7 +73,7 @@
       };
 
       appCtrls.existCard = function (card_hash, index) {
-        $rootScope.callPostAPI('http://127.0.0.1:8000/exist/', card_hash, function (data, textStatus) {
+        $rootScope.callPostAPI(appCtrls.baseAPIUrl + '/exist/', card_hash, function (data, textStatus) {
           if (textStatus == "success") {
             let response = JSON.parse(data);
             $scope.$apply(function() { appCtrls.parsedCardResponse[index]["exists"] = response["status"] });
@@ -82,7 +82,7 @@
       }
 
       appCtrls.existCardList = function (card_hash_list) {
-        $rootScope.callPostAPI('http://127.0.0.1:8000/exist_list/', JSON.stringify(card_hash_list), function (data, textStatus) {
+        $rootScope.callPostAPI(appCtrls.baseAPIUrl + '/exist_list/', JSON.stringify(card_hash_list), function (data, textStatus) {
           if (textStatus == "success") {
             let response = JSON.parse(data);
             for (let index in response) {

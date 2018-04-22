@@ -29,14 +29,14 @@
         <label class="h6">
           Exists:
         </label>
-        <h1><i class="fa fa-spinner fa-spin" ng-show="appCtrls.existList[$index] == undefined"></i></h1>
+        <h1 ng-show="appCtrls.existList[$index] == undefined"><i class="fa fa-spinner fa-spin"></i></h1>
         <h6>{{appCtrls.existList[$index]}}</h6>
       </div>
     </div>
     <div class="col">
       <img class="w-100" alt="Image Preview" id="preview_{{$index}}" />
     </div>
-    <h1><i class="fa fa-spinner fa-spin" ng-show="appCtrls.parsedCardResponse[$index] == undefined"></i></h1>
+    <h1 ng-hide="appCtrls.parsedCardResponse[$index]"><i class="fa fa-spinner fa-spin"></i></h1>
     <!-- <pre class="col pre card-response-input" contenteditable="true">{{appCtrls.parsedCardResponse[$index]}}</pre> -->
     <div class="col-sm">
       <div ng-show="appCtrls.parsedCardResponse[$index]" >
