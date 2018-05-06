@@ -31,6 +31,23 @@ function searchCardImage(req, res) {
   });
 }
 
+function searchCardData(req, res) {
+  playerService.searchCardData( req.query.hash )
+    .then(function (result) {
+      if (result) {
+        //found link
+        res.send(result);
+      }
+      else {
+        //failed
+        res.status(404).send({});
+      }
+    })
+    .catch(function (err) {
+      res.status(400).send(err);
+    });
+}
+
 
 function search(req, res) {
   playerService.search(req.query)
