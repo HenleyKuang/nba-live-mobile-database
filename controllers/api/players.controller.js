@@ -5,6 +5,7 @@ var playerService = require('../../services/players.service');
 
 // routes
 router.get('/searchCardImage', searchCardImage);
+router.get('/searchCardData', searchCardData);
 router.get('/search', search);
 
 module.exports = router;
